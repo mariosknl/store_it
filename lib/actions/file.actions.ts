@@ -8,6 +8,7 @@ import { constructFileUrl, getFileType, parseStringify } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "@/lib/actions/user.actions";
 import {
+  DeleteFileProps,
   RenameFileProps,
   UpdateFileUsersProps,
   UploadFileProps,
@@ -148,6 +149,32 @@ export const updateFileUsers = async ({
     revalidatePath(path);
 
     return parseStringify(updatedFile);
+  } catch (error) {
+    handleError(error, "Failed to rename the file");
+  }
+};
+
+export const deleteFile = async ({
+  fileId,
+  bucketFileId,
+  path,
+}: DeleteFileProps) => {
+  const { databases, storage } = await createAdminClient();
+
+  try {
+    const deletedFile = await databases.deleteDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.filesCollection,
+      fileId
+    );
+
+    if (deletedFile) {
+      await storage.deleteFile(appwriteConfig.bucketId, bucketFileId);
+    }
+
+    revalidatePath(path);
+
+    return parseStringify({ status: "success" });
   } catch (error) {
     handleError(error, "Failed to rename the file");
   }
