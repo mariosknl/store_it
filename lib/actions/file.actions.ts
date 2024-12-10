@@ -63,3 +63,39 @@ export const uploadFile = async ({
     handleError(error, "Failed to upload file");
   }
 };
+
+const createQueries = (currentUser: Models.Document) => {
+  const queries = [
+    Query.or([
+      Query.equal("owner", [currentUser.$id]),
+      Query.contains("users", [currentUser.email]),
+    ]),
+  ];
+
+  return queries;
+};
+
+export const getFiles = async () => {
+  const { databases } = await createAdminClient();
+
+  try {
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) throw new Error("User not found");
+
+    const queries = createQueries(currentUser);
+
+    console.log({ currentUser, queries });
+
+    const files = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.filesCollection,
+      queries
+    );
+    console.log({ files });
+
+    return parseStringify(files);
+  } catch (error) {
+    handleError(error, "Failed to get the files");
+  }
+};
