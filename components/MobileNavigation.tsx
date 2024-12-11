@@ -3,21 +3,19 @@
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
-  SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { navItems } from "@/constants";
+import { signOutUser } from "@/lib/actions/user.actions";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Separator } from "./ui/separator";
-import { navItems } from "@/constants";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { Button } from "./ui/button";
 import FileUploader from "./FileUploader";
-import { signOutUser } from "@/lib/actions/user.actions";
+import { Button } from "./ui/button";
+import { Separator } from "./ui/separator";
 
 interface Props {
   $id: string;
