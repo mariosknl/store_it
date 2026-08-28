@@ -23,7 +23,7 @@
     "input-otp": "^1.4.1",
     "lucide-react": "^1.0.0",
     "next": "15.5.24",
-    "node-appwrite": "^27.0.0",
+    "node-appwrite": "^28.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-dropzone": "^20.0.0",
